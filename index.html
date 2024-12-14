@@ -2,25 +2,66 @@
 <html>
    <head>
       <meta name="viewport" content="width=device-width, initial-scale=1">
-      <title>Camera Access</title>
+      <title>Camera Control</title>
    </head>
    <body>
-      <h1>Enable Camera</h1>
-      <button onclick="enableCamera()">Open Camera</button>
+      <!-- Iframe -->
+      <iframe 
+         id="app-frame" 
+         style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;" 
+         src="https://script.google.com/macros/s/AKfycbyEtbfxmNRv9Q5v4CqOrYIa0JrhMhnz2etKFWhjU5tApNd8MJh4S3mthcpDspzmwFA05g/exec">
+      </iframe>
+
+      <!-- Script for camera control -->
       <script>
+         let cameraStream; // Store the MediaStream object
+
+         // Function to enable the camera
          async function enableCamera() {
              try {
-                 const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+                 // Request camera access
+                 cameraStream = await navigator.mediaDevices.getUserMedia({ video: true });
                  const videoElement = document.createElement('video');
-                 videoElement.srcObject = stream;
+                 videoElement.id = 'camera-stream';
+                 videoElement.srcObject = cameraStream;
                  videoElement.autoplay = true;
-                 videoElement.style.width = '100%';
+                 videoElement.style.position = "absolute";
+                 videoElement.style.top = "10px";
+                 videoElement.style.width = "90%";
+                 videoElement.style.margin = "5%";
                  document.body.appendChild(videoElement);
              } catch (error) {
                  console.error('Error accessing camera:', error);
                  alert('Unable to access camera. Please check your browser settings.');
              }
          }
+
+         // Function to disable the camera
+         function disableCamera() {
+             if (cameraStream) {
+                 // Stop all tracks in the stream
+                 cameraStream.getTracks().forEach(track => track.stop());
+                 cameraStream = null;
+
+                 // Remove the video element from the DOM
+                 const videoElement = document.getElementById('camera-stream');
+                 if (videoElement) {
+                     videoElement.remove();
+                 }
+                 alert('Camera has been turned off.');
+             } else {
+                 alert('No camera is currently active.');
+             }
+         }
+
+         // Listen for messages from iframe
+         window.addEventListener("message", (event) => {
+             if (event.data === "enableCamera") {
+                 enableCamera();
+             } else if (event.data === "disableCamera") {
+                 disableCamera();
+             }
+         });
       </script>
    </body>
 </html>
