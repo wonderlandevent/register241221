@@ -1,12 +1,26 @@
 <!DOCTYPE html>
-
 <html>
    <head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-      <base target="_top">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <title>Camera Access</title>
    </head>
    <body>
-      <iframe style="position: absolute;top: 0;left: 0;width: 100%;height: 100%;border: 0;" src="https://script.google.com/macros/s/AKfycbyEtbfxmNRv9Q5v4CqOrYIa0JrhMhnz2etKFWhjU5tApNd8MJh4S3mthcpDspzmwFA05g/exec"></iframe>
+      <h1>Enable Camera</h1>
+      <button onclick="enableCamera()">Open Camera</button>
+      <script>
+         async function enableCamera() {
+             try {
+                 const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+                 const videoElement = document.createElement('video');
+                 videoElement.srcObject = stream;
+                 videoElement.autoplay = true;
+                 videoElement.style.width = '100%';
+                 document.body.appendChild(videoElement);
+             } catch (error) {
+                 console.error('Error accessing camera:', error);
+                 alert('Unable to access camera. Please check your browser settings.');
+             }
+         }
+      </script>
    </body>
- 
 </html>
