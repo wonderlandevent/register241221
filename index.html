@@ -2,21 +2,11 @@
 <html>
    <head>
       <meta name="viewport" content="width=device-width, initial-scale=1">
-      <title>Parent Page</title>
+      <base target="_top">
    </head>
    <body>
-      <iframe id="app-frame" style="width: 100%; height: 80vh;" src="https://script.google.com/macros/s/AKfycbyEtbfxmNRv9Q5v4CqOrYIa0JrhMhnz2etKFWhjU5tApNd8MJh4S3mthcpDspzmwFA05g/exec"></iframe>
       <script>
-         window.addEventListener('message', async (event) => {
-             if (event.data === 'enableCamera') {
-                 try {
-                     const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-                     console.log('Camera enabled:', stream);
-                 } catch (error) {
-                     console.error('Error enabling camera:', error);
-                 }
-             }
-         });
+         window.location.href = "https://script.google.com/macros/s/AKfycbyEtbfxmNRv9Q5v4CqOrYIa0JrhMhnz2etKFWhjU5tApNd8MJh4S3mthcpDspzmwFA05g/exec";
       </script>
    </body>
 </html>
