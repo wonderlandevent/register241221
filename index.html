@@ -9,4 +9,42 @@
    <body>
       <iframe style="position: absolute;top: 0;left: 0;width: 100%;height: 100%;border: 0;" src="https://script.google.com/macros/s/AKfycbyEtbfxmNRv9Q5v4CqOrYIa0JrhMhnz2etKFWhjU5tApNd8MJh4S3mthcpDspzmwFA05g/exec"></iframe>
    </body>
+   <script type="text/javascript">
+
+    function onScanSuccess(qrCodeMessage) {
+      // เมื่อสแกนเสร็จ นำข้อมูลจาก QR code มากรอกในช่อง
+      document.getElementById('wristbandCode').value = qrCodeMessage;  // กรอกข้อมูลลงในฟอร์ม
+      // stopScan(); // หยุดการสแกนหลังจากสแกนสำเร็จ
+    }
+
+    function onScanError(errorMessage) {
+      // handle scan error
+      console.error(errorMessage);
+    }
+
+    var html5QrcodeScanner;
+
+    function startScan() {
+      // ตรวจสอบสิทธิ์การเข้าถึงกล้อง
+      if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+        // ถ้ามีกล้องสามารถเปิดใช้งานได้
+        document.getElementById('reader').style.display = 'block';
+        document.getElementById('startScanButton').style.display = 'block'; // ซ่อนปุ่มเมื่อเปิดกล้องแล้ว
+        html5QrcodeScanner = new Html5QrcodeScanner(
+          "reader", { fps: 10, qrbox: 250 });
+        html5QrcodeScanner.render(onScanSuccess, onScanError);
+      } else {
+        alert('ไม่พบกล้อง หรือไม่ได้รับอนุญาตให้ใช้งานกล้อง');
+      }
+    }
+
+    // function stopScan() {
+    //   // ซ่อนกล้องและหยุดการสแกน
+    //   document.getElementById('reader').style.display = 'block';
+    //   if (html5QrcodeScanner) {
+    //     html5QrcodeScanner.clear(); // หยุดการสแกน
+    //   }
+    // }    
+    
+  </script>     
 </html>
